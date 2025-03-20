@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+
+  <!-- Define the world with physics, plugins, and lighting -->
+  <world name="supermarket">    
+    <!-- Physics Settings -->
+    <physics name="default_physics" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Gazebo Plugins -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+
+    <!-- Light Source -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Gravity Settings -->
+    <!-- <gravity>0 0 -9.81</gravity> -->
+
+    <!-- Ground Plane to Prevent Objects from Falling -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Supermarket Model with Walls -->
+    <model name="supermarket">
+      <pose>-0.050243 -0.092477 0 0 -0 0</pose>
+      <static>true</static> 
+    <link name='charging station'>
+      <collision name='Door_0_Collision'>
+        <geometry>
+          <box>
+            <size>6.86053 0.2 2</size>
+          </box>
+        </geometry>
+        <pose>0 0 1 0 -0 0</pose>
+      </collision>
+      <visual name='Door_0_Visual'>
+        <pose>0 0 1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>6.86053 0.2 2</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <pose>-9.79492 6.38636 -0.5 0 -0 -1.57877</pose>
+    </link>
+    <link name='Wall_0'>
+      <collision name='Wall_0_Collision'>
+        <geometry>
+          <box>
+            <size>20.25 0.15 2.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 1.25 0 -0 0</pose>
+      </collision>
+      <visual name='Wall_0_Visual'>
+        <pose>0 0 1.25 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>20.25 0.15 2.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>-0.022919 -9.94541 0 0 -0 3.14159</pose>
+    </link>
+    <link name='Wall_1'>
+      <collision name='Wall_1_Collision'>
+        <geometry>
+          <box>
+            <size>20 0.15 2.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 1.25 0 -0 0</pose>
+      </collision>
+      <visual name='Wall_1_Visual'>
+        <pose>0 0 1.25 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.15 2.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>10.067 -0.012432 0 0 -0 -1.5708</pose>
+    </link>
+    <link name='Wall_2'>
+      <collision name='Wall_2_Collision'>
+        <geometry>
+          <box>
+            <size>20 0.15 2.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 1.25 0 -0 0</pose>
+      </collision>
+      <visual name='Wall_2_Visual'>
+        <pose>0 0 1.25 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>20 0.15 2.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0.147919 9.94541 0 0 -0 0</pose>
+    </link>
+    <link name='vegetables'>
+      <collision name='vegetables_Collision'>
+        <geometry>
+          <box>
+            <size>7 1.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.75 0 -0 0</pose>
+      </collision>
+      <visual name='vegetables_Visual'>
+        <pose>0 0 0.75 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>1.46702 -7.25988 -0.5 0 -0 0</pose>
+    </link>
+    <link name='fruits'>
+      <collision name='fruits_Collision'>
+        <geometry>
+          <box>
+            <size>7 1.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.75 0 -0 0</pose>
+      </collision>
+      <visual name='fruits_Visual'>
+        <pose>0 0 0.75 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>7 1.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>1.48372 -3.18258 -0.5 0 -0 0</pose>
+    </link>
+    <link name='drinks'>
+      <collision name='drinks_Collision'>
+        <geometry>
+          <box>
+            <size>6 1.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.75 0 -0 0</pose>
+      </collision>
+      <visual name='drinksVisual'>
+        <pose>0 0 0.75 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>6 1.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>-7.09885 -4.41814 -0.5 0 -0 1.5708</pose>
+    </link>
+    <link name='sweets'>
+      <collision name='sweets_Collision'>
+        <geometry>
+          <box>
+            <size>8 1.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.75 0 -0 0</pose>
+      </collision>
+      <visual name='sweets_Visual'>
+        <pose>0 0 0.75 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>8 1.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0.40844 6.91594 -0.5 0 -0 0</pose>
+    </link>
+    <link name='dairies'>
+      <collision name='dairies_Collision'>
+        <geometry>
+          <box>
+            <size>10.75 1.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0.75 0 -0 0</pose>
+      </collision>
+      <visual name='dairies_Visual'>
+        <pose>0 0 0.75 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>10.75 1.5 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>8.95676 3.90401 -0 0 -0 1.5708</pose>
+    </link>
+    </model>
+  </world>
+</sdf>

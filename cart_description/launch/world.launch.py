@@ -8,7 +8,7 @@ from launch.substitutions import  LaunchConfiguration, PathJoinSubstitution, Tex
 def generate_launch_description():
 
     world_arg = DeclareLaunchArgument(
-        'world', default_value='supermarket.world',
+        'world', default_value='mart.world',
         description='Name of the Gazebo world file to load'
     )
 

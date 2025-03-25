@@ -16,7 +16,7 @@ def generate_launch_description():
     # os.environ["GZ_SIM_RESOURCE_PATH"] += os.pathsep + gazebo_models_path
 
     gz_bridge_params_path = os.path.join(
-        get_package_share_directory('cart_description'),
+        get_package_share_directory('smartcart'),
         'config',
         'gz_bridge.yaml'
     )

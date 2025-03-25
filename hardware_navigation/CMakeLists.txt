@@ -6,7 +6,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 install(
-  DIRECTORY launch urdf config worlds rviz maps
+  DIRECTORY launch config rviz maps
   DESTINATION share/${PROJECT_NAME}
 )
 

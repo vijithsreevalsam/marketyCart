@@ -35,7 +35,7 @@
     </light>
 
     <!-- Gravity Settings -->
-    <!-- <gravity>0 0 -9.81</gravity> -->
+    <gravity>0 0 -9.81</gravity>
 
     <!-- Ground Plane to Prevent Objects from Falling -->
     <model name="ground_plane">
@@ -69,7 +69,7 @@
     <model name="supermarket">
       <pose>-0.050243 -0.092477 0 0 -0 0</pose>
       <static>true</static> 
-    <link name='charging station'>
+    <!-- <link name='charging station'>
       <collision name='charging station_Collision'>
         <geometry>
           <box>
@@ -180,12 +180,12 @@
         </meta>
       </visual>
       <pose>0.147919 9.94541 0 0 -0 0</pose>
-    </link>
+    </link> -->
     <link name='vegetables'>
       <collision name='vegetables_Collision'>
         <geometry>
           <box>
-            <size>7 1.5 1.5</size>
+            <size>5 1.5 1.5</size>
           </box>
         </geometry>
         <pose>0 0 0.75 0 -0 0</pose>
@@ -208,9 +208,9 @@
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>1.46702 -7.25988 -0.5 0 -0 0</pose>
+      <pose>0 -4 0 0 0 0</pose>
     </link>
-    <link name='fruits'>
+    <!-- <link name='fruits'>
       <collision name='fruits_Collision'>
         <geometry>
           <box>
@@ -325,7 +325,7 @@
         </meta>
       </visual>
       <pose>8.95676 3.90401 -0 0 -0 1.5708</pose>
-    </link>
+    </link> -->
     </model>
   </world>
 </sdf>

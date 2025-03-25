@@ -54,7 +54,7 @@ def generate_launch_description():
     map_file_path = os.path.join(
         get_package_share_directory('cart_navigation'),
         'maps',
-        'map.yaml'
+        'map2.yaml'
     )
 
     # Launch rviz
@@ -90,7 +90,7 @@ def generate_launch_description():
         os.path.join(pkg_cart_navigation, 'launch', 'cart.launch.py')  # or whatever your Gazebo launch file name is
     ),
     launch_arguments={
-        'world': 'supermarket.world',   # or pass world arg if needed
+        'world': 'mart.world',   # or pass world arg if needed
         'model': 'cart.urdf.xacro'
     }.items()
 )

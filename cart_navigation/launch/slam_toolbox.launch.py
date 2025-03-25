@@ -10,14 +10,14 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, Grou
 def generate_launch_description():
 
     # Package name
-    package_name='cart_navigation'
+    package_name='smartcart'
 
     # Launch configurations
     world = LaunchConfiguration('world')
     rviz = LaunchConfiguration('rviz')
 
     # Path to default world 
-    world_path = os.path.join(get_package_share_directory(package_name), 'worlds', 'empty.world')
+    world_path = os.path.join(get_package_share_directory(package_name), 'worlds', 'sample.world')
 
     # Launch Arguments
     declare_world = DeclareLaunchArgument(

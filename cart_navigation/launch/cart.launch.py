@@ -11,7 +11,7 @@ def generate_launch_description():
 
     pkg_urdf_path = get_package_share_directory('cart_navigation')
     pkg_gazebo_path = get_package_share_directory('cart_navigation')
-    pkg_smartcart = get_package_share_directory('cart_navigation')
+    pkg_cart_navigation = get_package_share_directory('cart_navigation')
     gazebo_models_path, ignore_last_dir = os.path.split(pkg_urdf_path)
     # os.environ["GZ_SIM_RESOURCE_PATH"] += os.pathsep + gazebo_models_path
 
@@ -113,7 +113,7 @@ def generate_launch_description():
         name='ekf_filter_node',
         output='screen',
         parameters=[
-            os.path.join(pkg_smartcart, 'config', 'ekf.yaml'),
+            os.path.join(pkg_cart_navigation, 'config', 'ekf.yaml'),
             {'use_sim_time': True},
              ]
     )

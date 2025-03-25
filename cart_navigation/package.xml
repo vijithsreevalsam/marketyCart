@@ -3,11 +3,15 @@
 <package format="3">
   <name>cart_navigation</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="AA5508@live.mdx.ac.uk.com">amen</maintainer>
+  <description>Supermarket smart cart navigation package with GUI</description>
+  <maintainer email="AA5508@live.mdx.ac.uk">amen</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>nav2_msgs</exec_depend>
+  <exec_depend>python3-tk</exec_depend> <!-- for Tkinter GUI -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
@@ -16,3 +20,4 @@
     <build_type>ament_cmake</build_type>
   </export>
 </package>
+

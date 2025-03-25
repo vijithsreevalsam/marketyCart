@@ -21,7 +21,7 @@
 
     <!-- Light Source -->
     <light type="directional" name="sun">
-      <cast_shadows>false</cast_shadows>
+      <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
@@ -45,7 +45,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>200 200</size>
+              <size>100 100</size>
             </plane>
           </geometry>
         </collision>
@@ -53,7 +53,7 @@
           <geometry>
             <plane>
               <normal>0 0 1</normal>
-              <size>200 200</size>
+              <size>100 100</size>
             </plane>
           </geometry>
           <material>
@@ -64,13 +64,14 @@
         </visual>
       </link>
     </model>
-    
+
     <!-- Supermarket Model with Walls -->
     <model name="supermarket">
-      <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <!-- <pose>-0.050243 -0.092477 0 0 -0 0</pose> -->
+      <pose>0 0 0 0 0 0</pose>
       <static>true</static> 
-     <!-- <link name='charging station'>
-      <collision name='Door_0_Collision'>
+    <!-- <link name='charging station'>
+      <collision name='charging station_Collision'>
         <geometry>
           <box>
             <size>6.86053 0.2 2</size>
@@ -78,7 +79,7 @@
         </geometry>
         <pose>0 0 1 0 -0 0</pose>
       </collision>
-      <visual name='Door_0_Visual'>
+      <visual name='charging station_Visual'>
         <pose>0 0 1 0 -0 0</pose>
         <geometry>
           <box>
@@ -93,13 +94,12 @@
         </material>
       </visual>
       <pose>-9.79492 6.38636 -0.5 0 -0 -1.57877</pose>
-    </link> -->
-
+    </link>
     <link name='Wall_0'>
       <collision name='Wall_0_Collision'>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>20.25 0.15 2.5</size>
           </box>
         </geometry>
         <pose>0 0 1.25 0 -0 0</pose>
@@ -108,7 +108,7 @@
         <pose>0 0 1.25 0 -0 0</pose>
         <geometry>
           <box>
-            <size>20 0.15 2.5</size>
+            <size>20.25 0.15 2.5</size>
           </box>
         </geometry>
         <material>
@@ -122,7 +122,7 @@
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>0 -9.94541 0 0 -0 3.14159</pose>
+      <pose>-0.022919 -9.94541 0 0 -0 3.14159</pose>
     </link>
     <link name='Wall_1'>
       <collision name='Wall_1_Collision'>
@@ -180,75 +180,135 @@
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>0 9.94541 0 0 -0 0</pose>
-    </link> 
-    <link name='vegetables'>
+      <pose>0.147919 9.94541 0 0 -0 0</pose>
+    </link> -->
+
+    <!-- <link name='vegetables'>
       <collision name='vegetables_Collision'>
         <geometry>
           <box>
-            <size>7 1 1.5</size>
+            <size>4 1 1.5</size>
           </box>
         </geometry>
-        <pose>0 0 0.75 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
       </collision>
       <visual name='vegetables_Visual'>
-        <pose>0 0 0.75 0 0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
-            <size>7 1 1</size>
+            <size>4 1 1.5</size>
           </box>
         </geometry>
         <material>
-          <!-- <script>
+          <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Grey</name>
-          </script> -->
-        <ambient>0.35 0.16 0.05 1</ambient>   <!-- Darker brown -->
-        <diffuse>0.35 0.16 0.05 1</diffuse>
-        <specular>0.2 0.2 0.2 1</specular>
+          </script>
+          <ambient>1 1 1 1</ambient>
         </material>
         <meta>
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>1.5 -7.0 -0.5 0 -0 0</pose>
-    </link>
+      <pose>3 0 0.5 0 0 1.57708</pose>
+    </link> -->
+
     <link name='fruits'>
       <collision name='fruits_Collision'>
         <geometry>
           <box>
-            <size>7 1 1.5</size>
+            <size>4 0.5 1.5</size>
           </box>
         </geometry>
-        <pose>0 0 0.75 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
       </collision>
       <visual name='fruits_Visual'>
-        <pose>0 0 0.75 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
-            <size>7 1 1</size>
+            <size>4 0.5 1</size>
           </box>
         </geometry>
         <material>
-          <!-- <script>
+          <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/Grey</name>
-          </script> -->
-        <ambient>0.35 0.16 0.05 1</ambient>   <!-- Darker brown -->
-        <diffuse>0.35 0.16 0.05 1</diffuse>
-        <specular>0.2 0.2 0.2 1</specular>
+          </script>
+          <ambient>1 1 1 1</ambient>
         </material>
         <meta>
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>1.5 -3.0 -0.5 0 -0 0</pose>
+      <pose>4 -1 0.5 0 0 1.57708</pose>
     </link>
-    <link name='dairies'>
+
+    <link name='drinks'>
+      <collision name='drinks_Collision'>
+        <geometry>
+          <box>
+            <size>4 0.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0 0 -0 0</pose>
+      </collision>
+      <visual name='drinksVisual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>4 0.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0 5 0.5 0 0 0</pose>
+    </link> 
+
+    <link name='sweets'>
+      <collision name='sweets_Collision'>
+        <geometry>
+          <box>
+            <size>4 0.5 1.5</size>
+          </box>
+        </geometry>
+        <pose>0 0 0 0 0 0</pose>
+      </collision>
+      <visual name='sweets_Visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>4 0.5 1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+        <meta>
+          <layer>0</layer>
+        </meta>
+      </visual>
+      <pose>0 2.5 0.5 0 0 0</pose>
+    </link>
+
+
+    <!-- <link name='dairies'>
       <collision name='dairies_Collision'>
         <geometry>
           <box>
-            <size>10.0 1.5 1.5</size>
+            <size>10.75 1.5 1.5</size>
           </box>
         </geometry>
         <pose>0 0 0.75 0 -0 0</pose>
@@ -257,97 +317,7 @@
         <pose>0 0 0.75 0 -0 0</pose>
         <geometry>
           <box>
-            <size>10.0 1.5 1.5</size>
-          </box>
-        </geometry>
-        <material>
-          <!-- <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script> -->
-        <ambient>0.35 0.16 0.05 1</ambient>   <!-- Darker brown -->
-        <diffuse>0.35 0.16 0.05 1</diffuse>
-        <specular>0.2 0.2 0.2 1</specular>
-        </material>
-        <meta>
-          <layer>0</layer>
-        </meta>
-      </visual>
-      <pose>9.3 5 0 0 0 1.5708</pose>
-    </link>
-
-    <model name='box_obstacle'>
-      <static>true</static>
-      <pose>-1 6 0 0 0 0</pose>
-      <link name='link'>
-        <collision name='collision'>
-        <pose>0 0 0.5 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>1 1 1</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name='visual'>
-        <pose>0 0 0.5 0 0 0</pose>
-          <geometry>
-            <box>
-              <size>1 1 1</size>
-            </box>
-          </geometry>
-          <material>
-          <ambient>0 0 0 1</ambient>
-          <diffuse>0 0 0 1</diffuse>
-          <specular>0.3 0.3 0.3 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name='cylinder_obstacle'>
-  <static>true</static>
-  <pose>3 5 0 0 0 0</pose>
-  <link name='link'>
-    <collision name='collision'>
-      <pose>0 0 0.25 0 0 0</pose>
-      <geometry>
-        <cylinder>
-          <radius>0.35</radius>
-          <length>0.5</length>
-        </cylinder>
-      </geometry>
-    </collision>
-    <visual name='visual'>
-      <pose>0 0 0.25 0 0 0</pose>
-      <geometry>
-        <cylinder>
-          <radius>0.35</radius>
-          <length>0.5</length>
-        </cylinder>
-      </geometry>
-      <material>
-          <ambient>0 0 0 1</ambient>
-          <diffuse>0 0 0 1</diffuse>
-          <specular>0.3 0.3 0.3 1</specular>
-      </material>
-    </visual>
-  </link>
-</model>
-
-    <!-- <link name='sweets'>
-      <collision name='sweets_Collision'>
-        <geometry>
-          <box>
-            <size>8 1.5 1.5</size>
-          </box>
-        </geometry>
-        <pose>0 0 0.75 0 -0 0</pose>
-      </collision>
-      <visual name='sweets_Visual'>
-        <pose>0 0 0.75 0 -0 0</pose>
-        <geometry>
-          <box>
-            <size>8 1.5 1</size>
+            <size>10.75 1.5 1.5</size>
           </box>
         </geometry>
         <material>
@@ -361,37 +331,8 @@
           <layer>0</layer>
         </meta>
       </visual>
-      <pose>0.40844 6.91594 -0.5 0 -0 0</pose>
-    </link> -->
-    <!-- <link name='drinks'>
-      <collision name='drinks_Collision'>
-        <geometry>
-          <box>
-            <size>6 1.5 1.5</size>
-          </box>
-        </geometry>
-        <pose>0 0 0.75 0 -0 0</pose>
-      </collision>
-      <visual name='drinksVisual'>
-        <pose>0 0 0.75 0 -0 0</pose>
-        <geometry>
-          <box>
-            <size>6 1.5 1</size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
-          <ambient>1 1 1 1</ambient>
-        </material>
-        <meta>
-          <layer>0</layer>
-        </meta>
-      </visual>
-      <pose>-7.09885 -4.41814 -0.5 0 -0 1.5708</pose>
-    </link> -->
+      <pose>8.95676 3.90401 -0 0 -0 1.5708</pose>
+    </link>   -->
     </model>
   </world>
 </sdf>

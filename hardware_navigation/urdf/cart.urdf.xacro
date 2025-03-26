@@ -2,10 +2,10 @@
 
 <robot name="cart" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="cart_design.xacro" />
+    <xacro:include filename="cart_design.urdf.xacro" />
 
     <xacro:include filename="cart_control.gazebo"/>
 
-    <!-- <xacro:include filename="lidar.xacro" /> -->
+    <xacro:include filename="lidar.xacro"/>
 
 </robot>

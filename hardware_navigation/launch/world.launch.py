@@ -12,7 +12,7 @@ def generate_launch_description():
         description='Name of the Gazebo world file to load'
     )
 
-    pkg_bme_gazebo_basics = get_package_share_directory('cart_description')
+    pkg_bme_gazebo_basics = get_package_share_directory('cart_navigation')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # Add your own gazebo library path here

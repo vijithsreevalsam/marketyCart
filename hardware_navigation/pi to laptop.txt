@@ -1,0 +1,13 @@
+export ROS_MASTER_URI=http://<laptop_ip>:11311
+export ROS_IP=<raspberry_pi_ip>
+
+
+export ROS_MASTER_URI=http://<laptop_ip>:11311
+export ROS_IP=<laptop_ip>
+
+export ROS_DOMAIN_ID=0
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
+export ROS_NAMESPACE=/
+
+

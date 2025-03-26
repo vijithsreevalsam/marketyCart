@@ -24,7 +24,7 @@ class WaypointNavigator(QWidget):
         self.layout = QVBoxLayout()
         self.layout.addWidget(QLabel("Start navigation and select a section:", alignment=Qt.AlignCenter))
 
-        start_nav_btn = QPushButton("Start Navigation")
+        start_nav_btn = QPushButton("Start")
         start_nav_btn.clicked.connect(self.start_navigation)
         self.layout.addWidget(start_nav_btn)
 
@@ -34,7 +34,7 @@ class WaypointNavigator(QWidget):
 
         # Add buttons for each section
         if self.waypoints and any(self.waypoints.values()):
-            sections_label = QLabel("Go to these sections:")
+            sections_label = QLabel("sections:")
             sections_label.setAlignment(Qt.AlignCenter)
             self.layout.addWidget(sections_label)
 
@@ -76,7 +76,7 @@ class WaypointNavigator(QWidget):
     def start_navigation(self):
         print("Launching navigation stack...")
         try:
-            subprocess.Popen(["ros2", "launch", "cart_navigation", "navigation.launch.py"])
+            subprocess.Popen(["ros2", "launch", "hardware_navigation", "navigation.launch.py"])
             QMessageBox.information(self, "Navigation Stack", "Navigation stack launched.")
         except Exception as e:
             print(f"Error launching navigation stack: {e}")
@@ -106,10 +106,10 @@ class WaypointNavigator(QWidget):
             else:
                 print(f"Goal was rejected or failed for section: {section}")
 
-        QMessageBox.information(self, "Navigation", f"Robot is navigating to {section}.")
+        QMessageBox.information(self, "Navigation", f"cart is going to {section}.")
 
 if __name__ == "__main__":
-    waypoint_file = "/home/amen/waypoints.yaml"
+    waypoint_file = "/home/amen/ros2_ws/src/marketcart/waypoints.yaml"
     map_origin = (-10.4, -9.98)  # Adjust as per your map
 
     app = QApplication(sys.argv)

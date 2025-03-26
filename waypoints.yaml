@@ -1,0 +1,37 @@
+waypoints:
+  dairies:
+    - pose:
+        position:
+          x: 12.0
+          y: 11.0
+          z: 0.0
+        orientation:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+          w: 1.0
+
+  fruits:
+    - pose:
+        position:
+          x: -8.6
+          y: -7.0
+          z: 0.0
+        orientation:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+          w: 1.0
+
+  vegetables:
+    - pose:
+        position:
+          x: -8.6
+          y: -13.0
+          z: 0.0
+        orientation:
+          x: 0.0
+          y: 0.0
+          z: 0.0
+          w: 1.0
+

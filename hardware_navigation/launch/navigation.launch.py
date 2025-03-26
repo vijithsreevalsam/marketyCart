@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
-    pkg_cart_navigation = get_package_share_directory('cart_navigation')
+    pkg_cart_navigation = get_package_share_directory('hardware_navigation')
 
     rviz_launch_arg = DeclareLaunchArgument(
         'rviz', default_value='true',
@@ -40,19 +40,19 @@ def generate_launch_description():
     )
 
     localization_params_path = os.path.join(
-        get_package_share_directory('cart_navigation'),
+        get_package_share_directory('hardware_navigation'),
         'config',
         'amcl_localization.yaml'
     )
 
     navigation_params_path = os.path.join(
-        get_package_share_directory('cart_navigation'),
+        get_package_share_directory('hardware_navigation'),
         'config',
         'navigation.yaml'
     )
 
     map_file_path = os.path.join(
-        get_package_share_directory('cart_navigation'),
+        get_package_share_directory('hardware_navigation'),
         'maps',
         'map.yaml'
     )
@@ -90,7 +90,7 @@ def generate_launch_description():
         os.path.join(pkg_cart_navigation, 'launch', 'cart.launch.py')  # or whatever your Gazebo launch file name is
     ),
     launch_arguments={
-        'world': 'supermarket.world',   # or pass world arg if needed
+        'world': 'mart.world',   # or pass world arg if needed
         'model': 'cart.urdf.xacro'
     }.items()
 )

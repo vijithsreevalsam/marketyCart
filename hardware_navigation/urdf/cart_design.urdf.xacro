@@ -7,16 +7,16 @@
 
   <!-- Robot Constants -->
   <xacro:property name="base_width" value="0.2"/>
-  <xacro:property name="base_length" value="0.4"/>
-  <xacro:property name="base_height" value="0.1"/>
+  <xacro:property name="base_length" value="0.3"/>
+  <xacro:property name="base_height" value="0.03"/>
 
-  <xacro:property name="wheel_radius" value="0.06"/>
+  <xacro:property name="wheel_radius" value="0.0325"/>
   <xacro:property name="wheel_width" value="0.03"/>
-  <xacro:property name="wheel_ygap" value="0.02"/>
-  <xacro:property name="wheel_zoff" value="0.03"/>
-  <xacro:property name="wheel_xoff" value="0.12"/>
+  <xacro:property name="wheel_ygap" value="0.015"/>
+  <xacro:property name="wheel_zoff" value="0.015"/>
+  <xacro:property name="wheel_xoff" value="0.1"/>
 
-  <xacro:property name="caster_xoff" value="0.14"/>
+  <xacro:property name="caster_xoff" value="0.1"/>
 
   <!-- Robot Footprint -->
   <link name="base_footprint"/>

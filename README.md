@@ -1,6 +1,17 @@
+#simulation package launch 
+
+ros2 launch cart_navigation navigation.launch.py #navigation with robot spawned
+ros2 launch cart_navigation mapping.launch.py #does the slam
+ros2 launch cart_navigation cart.launch.py #spawn the robot
+
+#hardware package launch 
+
+ros2 launch hardware_navigation navigation.launch.py #navigation with robot spawned
+ros2 launch hardware_navigation mapping.launch.py #does the slam
+ros2 launch hardware_navigation cart.launch.py #spawn the robot
+
+
 #all required dependancies for running the packages
-
-
 sudo rosdep init
 rosdep update
 

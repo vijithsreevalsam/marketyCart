@@ -4,8 +4,8 @@ waypoints:
       x: 12.6605
       y: 8.0800
     orientation:
-      z: -0.8440
-      w: 0.5362
+      z: 1.0
+      w: 0.5
 
   vegetables:
     position:
@@ -20,8 +20,8 @@ waypoints:
       x: 17.1698
       y: 12.1592
     orientation:
-      z: 0.1174
-      w: 0.9930
+      z: -0.1174
+      w: -0.9930
 
   sweets:
     position:

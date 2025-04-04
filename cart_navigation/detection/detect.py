@@ -6,8 +6,9 @@ import os
 print("🥦🍎 YOLOv8 Fruit and Vegetable Recognition Test")
 print("==============================================")
 
-# Load YOLOv8 model
-model_path = "/home/amen/ros2_ws/src/marketcart/cart_navigation/detection/yolov8n.pt"
+# Dynamically resolve the path to detect.pt relative to this script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(script_dir, "detect.pt")
 if not os.path.exists(model_path):
     print(f"❌ Model not found at: {model_path}")
     exit()

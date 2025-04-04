@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLa
 from PyQt5.QtCore import Qt, QThread
 import os
 import math
+from pathlib import Path
 import signal
 
 # ------------------- Follow Me Node ------------------- #
@@ -47,21 +48,14 @@ class FollowMeNode(Node):
                 min_angle = angle
 
         if min_index != -1:
-            if not self.target_locked:
-                self.target_distance = min_distance
-                self.target_angle = min_angle
-                self.target_locked = True
-                self.get_logger().info(f"Target LOCKED at {min_distance:.2f}m, angle {math.degrees(min_angle):.1f}°")
-            else:
-                self.target_distance = min_distance
-                self.target_angle = min_angle
+            self.target_distance = min_distance
+            self.target_angle = min_angle
+            self.target_locked = True
         else:
             self.target_locked = False
-            self.get_logger().info("Target lost. Looking for a new target.")
 
     def control_loop(self):
         if not self.target_locked:
-            self.get_logger().info("No target locked. Stopping.")
             self.cmd_pub.publish(Twist())
             return
 
@@ -97,13 +91,12 @@ class ROS2Thread(QThread):
         self.executor.add_node(self.node)
         try:
             self.executor.spin()
-        except Exception as e:
-            print(f"[ROS2Thread] Exception: {e}")
+        except Exception:
+            pass
         finally:
             if self.node:
                 self.executor.remove_node(self.node)
                 self.node.destroy_node()
-            print("[ROS2Thread] Follow Me node shutdown complete.")
 
     def stop(self):
         if self.executor:
@@ -191,49 +184,45 @@ class WaypointNavigator(QWidget):
         return adjusted_waypoints
 
     def start_navigation(self):
-        print("🚀 Launching navigation stack...")
         try:
-            subprocess.Popen(["ros2", "launch", "cart_navigation", "navigation.launch.py"])
-            QMessageBox.information(self, "Navigation Stack", "Navigation stack launched.")
+            with open(os.devnull, 'w') as fnull:
+                subprocess.Popen([
+                    "ros2", "launch", "cart_navigation", "navigation.launch.py"
+                ], stdout=fnull, stderr=fnull)
+            print("🚀 Navigation stack launched.")
         except Exception as e:
-            print(f"❌ Error launching navigation: {e}")
             QMessageBox.critical(self, "Error", f"Error launching navigation: {e}")
 
     def start_follow_me(self):
-        print("🚶 Starting Follow Me...")
         if self.follow_me_thread is None:
             self.follow_me_thread = ROS2Thread()
             self.follow_me_thread.start()
+            print("🚶 Follow Me started.")
         else:
             print("Follow Me ON.")
 
     def stop_follow_me(self):
-        print("❌ Stopping Follow Me...")
         if self.follow_me_thread:
             self.follow_me_thread.stop()
             self.follow_me_thread.quit()
             self.follow_me_thread.wait()
             self.follow_me_thread = None
             print("✅ Follow Me stopped.")
-        else:
-            print("Follow Me OFF.")
 
     def start_detection(self):
-        print("🔍 Starting Detection...")
-        if self.detect_process is None:
-            self.detect_process = subprocess.Popen(["python3", "/home/amen/ros2_ws/src/marketcart/cart_navigation/detection/detect.py"])
-        else:
-            print("Detection ON.")
+        script_dir = Path(__file__).resolve().parent.parent.parent / "detection"
+        detect_script = script_dir / "detect.py"
+        if self.detect_process is None and detect_script.exists():
+            with open(os.devnull, 'w') as fnull:
+                self.detect_process = subprocess.Popen(["python3", str(detect_script)], stdout=fnull, stderr=fnull)
+            print("🔍 Detection started.")
 
     def stop_detection(self):
-        print("❌ Stopping Detection...")
         if self.detect_process:
             self.detect_process.terminate()
             self.detect_process.wait()
             self.detect_process = None
             print("✅ Detection stopped.")
-        else:
-            print("Detection OFF.")
 
     def navigate_to(self, section):
         section_name = section.capitalize()
@@ -242,7 +231,7 @@ class WaypointNavigator(QWidget):
             QMessageBox.critical(self, "Error", f"NavigateToPose action server not available for {section_name}.")
             return
 
-        print(f"\n🔄 Navigating to: {section_name}")
+        print(f"🧭 Going to section: {section_name}")
 
         for i, wp in enumerate(self.waypoints.get(section, []), 1):
             pos = wp['pose']['position']
@@ -256,20 +245,15 @@ class WaypointNavigator(QWidget):
             goal_msg.pose.pose.orientation.z = orient['z']
             goal_msg.pose.pose.orientation.w = orient['w']
 
-            print(f"[{section_name}] Sending waypoint {i}: x={pos['x']:.2f}, y={pos['y']:.2f}")
             future = self.action_client.send_goal_async(goal_msg)
             rclpy.spin_until_future_complete(self.node, future)
 
-            if future.result():
-                print(f"[{section_name}] ✅ Goal {i} accepted.")
-            else:
-                print(f"[{section_name}] ❌ Goal {i} failed.")
-
-        QMessageBox.information(self, "Navigation", f"🧭 Cart heading to: {section_name}")
+        QMessageBox.information(self, "Navigation", f"🗭 Cart heading to: {section_name}")
 
 # ------------------- Main ------------------- #
 if __name__ == "__main__":
-    waypoint_file = "/home/amen/ros2_ws/src/marketcart/cart_navigation/waypoints.yaml"
+    script_dir = Path(__file__).resolve().parent.parent.parent
+    waypoint_file = str(script_dir / "waypoints.yaml")
     map_origin = (-10.1, -9.98)
 
     app = QApplication(sys.argv)

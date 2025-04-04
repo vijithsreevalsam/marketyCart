@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import sys
 import yaml
 import subprocess
@@ -14,6 +13,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLa
 from PyQt5.QtCore import Qt, QThread
 import os
 import math
+import signal
 
 # ------------------- Follow Me Node ------------------- #
 class FollowMeNode(Node):
@@ -121,9 +121,9 @@ class WaypointNavigator(QWidget):
 
         self.waypoints = self.load_waypoints(waypoint_file, map_origin)
         self.layout = QVBoxLayout()
-        self.layout.addWidget(QLabel("Start navigation and select a section:", alignment=Qt.AlignCenter))
+        self.layout.addWidget(QLabel("Cart Screen:", alignment=Qt.AlignCenter))
 
-        start_nav_btn = QPushButton("Start Navigation")
+        start_nav_btn = QPushButton("Start")
         start_nav_btn.clicked.connect(self.start_navigation)
         self.layout.addWidget(start_nav_btn)
 
@@ -135,8 +135,16 @@ class WaypointNavigator(QWidget):
         follow_me_off_btn.clicked.connect(self.stop_follow_me)
         self.layout.addWidget(follow_me_off_btn)
 
+        detect_on_btn = QPushButton("Detect ON")
+        detect_on_btn.clicked.connect(self.start_detection)
+        self.layout.addWidget(detect_on_btn)
+
+        detect_off_btn = QPushButton("Detect OFF")
+        detect_off_btn.clicked.connect(self.stop_detection)
+        self.layout.addWidget(detect_off_btn)
+
         if self.waypoints and any(self.waypoints.values()):
-            self.layout.addWidget(QLabel("Go to these sections:", alignment=Qt.AlignCenter))
+            self.layout.addWidget(QLabel("Sections:", alignment=Qt.AlignCenter))
             for section in self.waypoints.keys():
                 button = QPushButton(section.capitalize())
                 button.clicked.connect(lambda checked, s=section: self.navigate_to(s))
@@ -146,11 +154,12 @@ class WaypointNavigator(QWidget):
 
         self.setLayout(self.layout)
 
-        rclpy.init(args=sys.argv)  # ✅ Only once in the whole process
+        rclpy.init(args=sys.argv)
         self.node = rclpy.create_node('waypoint_gui_node')
         self.action_client = ActionClient(self.node, NavigateToPose, '/navigate_to_pose')
 
         self.follow_me_thread = None
+        self.detect_process = None
 
     def load_waypoints(self, file_path, origin):
         with open(file_path, 'r') as f:
@@ -196,18 +205,35 @@ class WaypointNavigator(QWidget):
             self.follow_me_thread = ROS2Thread()
             self.follow_me_thread.start()
         else:
-            print("Follow Me already running.")
+            print("Follow Me ON.")
 
     def stop_follow_me(self):
         print("❌ Stopping Follow Me...")
         if self.follow_me_thread:
-            self.follow_me_thread.stop()        # ✅ Cleanly stop the executor
-            self.follow_me_thread.quit()        # ✅ Quit thread
-            self.follow_me_thread.wait()        # ✅ Wait for cleanup
+            self.follow_me_thread.stop()
+            self.follow_me_thread.quit()
+            self.follow_me_thread.wait()
             self.follow_me_thread = None
             print("✅ Follow Me stopped.")
         else:
-            print("Follow Me is not running.")
+            print("Follow Me OFF.")
+
+    def start_detection(self):
+        print("🔍 Starting Detection...")
+        if self.detect_process is None:
+            self.detect_process = subprocess.Popen(["python3", "/home/amen/ros2_ws/src/marketcart/cart_navigation/detection/detect.py"])
+        else:
+            print("Detection ON.")
+
+    def stop_detection(self):
+        print("❌ Stopping Detection...")
+        if self.detect_process:
+            self.detect_process.terminate()
+            self.detect_process.wait()
+            self.detect_process = None
+            print("✅ Detection stopped.")
+        else:
+            print("Detection OFF.")
 
     def navigate_to(self, section):
         section_name = section.capitalize()
@@ -239,7 +265,7 @@ class WaypointNavigator(QWidget):
             else:
                 print(f"[{section_name}] ❌ Goal {i} failed.")
 
-        QMessageBox.information(self, "Navigation", f"🧭 Cart is navigating to: {section_name}")
+        QMessageBox.information(self, "Navigation", f"🧭 Cart heading to: {section_name}")
 
 # ------------------- Main ------------------- #
 if __name__ == "__main__":
@@ -248,6 +274,6 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     window = WaypointNavigator(waypoint_file, map_origin)
-    window.resize(400, 400)
+    window.resize(400, 500)
     window.show()
     sys.exit(app.exec_())

@@ -26,7 +26,8 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 cv2.namedWindow("YOLOv8 Fruit Detection", cv2.WINDOW_NORMAL)
-cv2.resizeWindow("YOLOv8 Fruit Detection", 960, 540)
+# cv2.resizeWindow("YOLOv8 Fruit Detection", 1600, 900)
+cv2.setWindowProperty("YOLOv8 Fruit Detection", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
 # Price Dictionary
 price_dict = {

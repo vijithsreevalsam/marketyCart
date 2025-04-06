@@ -44,16 +44,15 @@ sudo apt-get install python3-numpy
 sudo apt-get install ros-${ROS_DISTRO}-urdf-tutorial
 
 #IMU
-sudo apt install ros-<distro>-rviz-imu-plugin
+sudo apt install ros-jazzy-rviz-imu-plugin  #replace jazzy with the required distro
 
 #Localization
-sudo apt install ros-<distro>-robot-localization
-
+sudo apt install ros-jazzy-robot-localization  #replace jazzy with the required distro
 #Slam & Navigation
-sudo apt install ros-jazzy-slam-toolbox
+sudo apt install ros-jazzy-slam-toolbox  #replace jazzy with the required distro
 # following are optional
-sudo apt install ros-<ros2-distro>-navigation2
-sudo apt install ros-<ros2-distro>-nav2-bringup
+sudo apt install ros-jazzy-navigation2  #replace jazzy with the required distro
+sudo apt install ros-jazzy-nav2-bringup #replace jazzy with the required distro
 
 #server connection
-sudo apt install ros-jazzy-nav2-map-server
+sudo apt install ros-jazzy-nav2-map-server #replace jazzy with the required distro

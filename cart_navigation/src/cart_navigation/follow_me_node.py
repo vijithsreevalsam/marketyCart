@@ -38,8 +38,8 @@ class FollowMeNode(Node):
         min_angle = 0
 
         # Parameters
-        fov_limit = math.radians(30)     # Only check ±30° in front
-        min_valid_range = 0.1            # Too close = likely wall
+        fov_limit = math.radians(15)     # Only check ±30° in front
+        min_valid_range = 0.02            # Too close = likely wall
         max_valid_range = 3.0           # Too far = ignore
 
         for i, distance in enumerate(msg.ranges):

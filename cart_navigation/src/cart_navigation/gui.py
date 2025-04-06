@@ -20,34 +20,51 @@ import signal
 class FollowMeNode(Node):
     def __init__(self):
         super().__init__('follow_me_node')
+
+        # ROS2 setup
         self.scan_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, 10)
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         self.timer = self.create_timer(0.1, self.control_loop)
 
+        # Target tracking
         self.target_distance = None
         self.target_angle = None
         self.target_locked = False
+
+        # PID for angular control
         self.last_angle_error = 0
         self.integral = 0
         self.kp = 0.8
         self.ki = 0.1
         self.kd = 0.05
 
+        # PID for linear control
+        self.linear_kp = 0.6
+        self.desired_distance = 0.3
+        self.max_linear_speed = 0.25
+        self.max_angular_speed = 1.0
+
     def lidar_callback(self, msg):
         min_distance = float('inf')
-        min_index = -1
         min_angle = 0
+
+        # Parameters
+        fov_limit = math.radians(15)
+        min_valid_range = 0.02
+        max_valid_range = 3.0
 
         for i, distance in enumerate(msg.ranges):
             angle = msg.angle_min + i * msg.angle_increment
-            if abs(angle) > math.radians(180):
+
+            if abs(angle) > fov_limit:
                 continue
-            if msg.range_min < distance < 2.0 and distance < min_distance:
+            if distance < min_valid_range or distance > max_valid_range:
+                continue
+            if distance < min_distance:
                 min_distance = distance
-                min_index = i
                 min_angle = angle
 
-        if min_index != -1:
+        if min_distance < float('inf'):
             self.target_distance = min_distance
             self.target_angle = min_angle
             self.target_locked = True
@@ -60,22 +77,22 @@ class FollowMeNode(Node):
             return
 
         msg = Twist()
-        distance_buffer = 0.05
 
-        if self.target_distance < 0.55 - distance_buffer:
-            msg.linear.x = 0.2
-        elif self.target_distance > 0.55 + distance_buffer:
-            msg.linear.x = 0.2
-        else:
-            msg.linear.x = 0.0
+        # === Linear PID ===
+        distance_error = self.target_distance - self.desired_distance
+        linear_velocity = self.linear_kp * distance_error
+        msg.linear.x = max(-self.max_linear_speed,
+                           min(self.max_linear_speed, linear_velocity))
 
+        # === Angular PID ===
         angle_error = self.target_angle
         self.integral += angle_error
         derivative = angle_error - self.last_angle_error
         angular_velocity = self.kp * angle_error + self.ki * self.integral + self.kd * derivative
         self.last_angle_error = angle_error
+        msg.angular.z = max(-self.max_angular_speed,
+                            min(self.max_angular_speed, angular_velocity))
 
-        msg.angular.z = angular_velocity
         self.cmd_pub.publish(msg)
 
 # ------------------- ROS2 Thread ------------------- #
@@ -159,27 +176,27 @@ class WaypointNavigator(QWidget):
             data = yaml.safe_load(f)
 
         adjusted_waypoints = {}
-        origin_x, origin_y = origin
 
         if isinstance(data, dict) and 'waypoints' in data:
             for key, wp in data['waypoints'].items():
-                if 'position' in wp and 'orientation' in wp:
-                    pos = wp['position']
-                    orient = wp['orientation']
+                if 'pose' in wp and 'orientation' in wp:
+                    pos = list(map(float, wp['pose']))
+                    orient = list(map(float, wp['orientation']))
                     adjusted_waypoints[key] = [{
                         'pose': {
                             'position': {
-                                'x': pos['x'] + origin_x,
-                                'y': pos['y'] + origin_y,
-                                'z': 0.0
+                                'x': pos[0],
+                                'y': pos[1],
+                                'z': pos[2]
                             },
                             'orientation': {
-                                'x': 0.0,
-                                'y': 0.0,
-                                'z': orient['z'],
-                                'w': orient['w']
+                                'x': orient[0],
+                                'y': orient[1],
+                                'z': orient[2],
+                                'w': orient[3]
                             }
-                        }
+                        },
+                        'speed': 0.5
                     }]
         return adjusted_waypoints
 
@@ -189,7 +206,7 @@ class WaypointNavigator(QWidget):
                 subprocess.Popen([
                     "ros2", "launch", "cart_navigation", "navigation.launch.py"
                 ], stdout=fnull, stderr=fnull)
-            print("🚀 Navigation stack launched.")
+            print("Navigation started.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error launching navigation: {e}")
 
@@ -197,9 +214,9 @@ class WaypointNavigator(QWidget):
         if self.follow_me_thread is None:
             self.follow_me_thread = ROS2Thread()
             self.follow_me_thread.start()
-            print("🚶 Follow Me started.")
-        else:
             print("Follow Me ON.")
+        else:
+            print("Follow Me already running.")
 
     def stop_follow_me(self):
         if self.follow_me_thread:
@@ -207,7 +224,7 @@ class WaypointNavigator(QWidget):
             self.follow_me_thread.quit()
             self.follow_me_thread.wait()
             self.follow_me_thread = None
-            print("✅ Follow Me stopped.")
+            print("Follow Me OFF.")
 
     def start_detection(self):
         script_dir = Path(__file__).resolve().parent.parent.parent / "detection"
@@ -215,14 +232,14 @@ class WaypointNavigator(QWidget):
         if self.detect_process is None and detect_script.exists():
             with open(os.devnull, 'w') as fnull:
                 self.detect_process = subprocess.Popen(["python3", str(detect_script)], stdout=fnull, stderr=fnull)
-            print("🔍 Detection started.")
+            print("Detection ON.")
 
     def stop_detection(self):
         if self.detect_process:
             self.detect_process.terminate()
             self.detect_process.wait()
             self.detect_process = None
-            print("✅ Detection stopped.")
+            print("Detection OFF.")
 
     def navigate_to(self, section):
         section_name = section.capitalize()
@@ -230,8 +247,6 @@ class WaypointNavigator(QWidget):
         if not self.action_client.wait_for_server(timeout_sec=5.0):
             QMessageBox.critical(self, "Error", f"NavigateToPose action server not available for {section_name}.")
             return
-
-        print(f"🧭 Going to section: {section_name}")
 
         for i, wp in enumerate(self.waypoints.get(section, []), 1):
             pos = wp['pose']['position']
@@ -248,13 +263,14 @@ class WaypointNavigator(QWidget):
             future = self.action_client.send_goal_async(goal_msg)
             rclpy.spin_until_future_complete(self.node, future)
 
+        print(f"Going to section: {section_name} ({pos['x']:.2f}, {pos['y']:.2f})")
         QMessageBox.information(self, "Navigation", f"🗭 Cart heading to: {section_name}")
 
 # ------------------- Main ------------------- #
 if __name__ == "__main__":
     script_dir = Path(__file__).resolve().parent.parent.parent
     waypoint_file = str(script_dir / "waypoints.yaml")
-    map_origin = (-10.1, -9.98)
+    map_origin = (0.0, 0.0)
 
     app = QApplication(sys.argv)
     window = WaypointNavigator(waypoint_file, map_origin)

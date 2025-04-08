@@ -30,7 +30,7 @@ class FollowMeNode(Node):
         # PID for linear control
         self.linear_kp = 0.6
         self.desired_distance = 0.3
-        self.max_linear_speed = 0.25
+        self.max_linear_speed = 0.4
         self.max_angular_speed = 1.0
 
     def lidar_callback(self, msg):
@@ -38,9 +38,9 @@ class FollowMeNode(Node):
         min_angle = 0
 
         # Parameters
-        fov_limit = math.radians(15)     # Only check ±30° in front
-        min_valid_range = 0.02            # Too close = likely wall
-        max_valid_range = 3.0           # Too far = ignore
+        fov_limit = math.radians(90)     # Only check ±30° in front
+        min_valid_range = 0.02          # Too close = likely wall
+        max_valid_range = 2.0           # Too far = ignore
 
         for i, distance in enumerate(msg.ranges):
             angle = msg.angle_min + i * msg.angle_increment

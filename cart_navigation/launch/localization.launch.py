@@ -42,7 +42,7 @@ def generate_launch_description():
     map_file_path = os.path.join(
         get_package_share_directory('cart_navigation'),
         'maps',
-        'map.yaml'
+        'map1.yaml'
     )
 
     # Launch rviz

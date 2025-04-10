@@ -13,15 +13,15 @@ ros2 launch hardware_navigation mapping.launch.py #does the slam
 ros2 launch hardware_navigation cart.launch.py #spawn the robot
 
 #launching follow me node
-cd ~/ros2_ws/src/marketmart/cart_navigation/detection
+cd Worspace path/src/marketmart/cart_navigation/detection
 detect.py
 
 #launching follow me node
-cd ~/ros2_ws/src/marketmart/cart_navigation/src/cart_navigation
+cd Worspace path/src/marketmart/cart_navigation/src/cart_navigation
 python3 follow_me_node.py
 
 #launching the gui
-cd ~/ros2_ws/src/marketmart/cart_navigation/src/cart_navigation
+cd Worspace path/src/marketmart/cart_navigation/src/cart_navigation
 python3 gui.py
 
 

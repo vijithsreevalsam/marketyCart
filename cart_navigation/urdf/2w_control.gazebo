@@ -12,11 +12,11 @@
         <wheel_separation>0.24</wheel_separation>
         <wheel_radius>0.0325</wheel_radius>
 
-        <max_velocity>2.0</max_velocity>
-        <max_linear_acceleration>2.0</max_linear_acceleration>
-        <max_angular_acceleration>2.0</max_angular_acceleration>
-        <max_linear_velocity>2.0</max_linear_velocity>
-        <max_angular_velocity>2.0</max_angular_velocity>
+        <max_velocity>5.0</max_velocity>
+        <max_linear_acceleration>4.0</max_linear_acceleration>
+        <max_angular_acceleration>4.0</max_angular_acceleration>
+        <max_linear_velocity>3.0</max_linear_velocity>
+        <max_angular_velocity>3.0</max_angular_velocity>
 
         <odom_topic>odom</odom_topic>
         <tf_topic>tf</tf_topic>

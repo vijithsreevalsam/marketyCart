@@ -53,8 +53,9 @@ bt_navigator:
       plugin: "nav2_bt_navigator::NavigateToPoseNavigator"
     navigate_through_poses:
       plugin: "nav2_bt_navigator::NavigateThroughPosesNavigator"
+    default_nav_to_pose_bt_xml: "/home/amen/ros2_ws/src/marketcart/cart_navigation/behavior_trees/nav_to_pose_with_consistent_replanning_and_if_path_becomes_invalid.xml"
     # default_nav_to_pose_bt_xml: "/home/amen/ros2_ws/src/marketcart/cart_navigation/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml"
-    default_nav_to_pose_bt_xml: "/home/amen/ros2_ws/src/marketcart/cart_navigation/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml"
+    # default_nav_to_pose_bt_xml: "/home/amen/ros2_ws/src/marketcart/cart_navigation/behavior_trees/navigate_to_pose_w_replanning_goal_patience_and_recovery.xml"
     default_nav_through_pose_bt_xml: "/home/amen/ros2_ws/src/marketcart/cart_navigation/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml"
     
     # plugin_lib_names is used to add custom BT plugins to the executor (vector of strings).
@@ -107,8 +108,8 @@ controller_server:
     FollowPath:
       plugin: "nav2_mppi_controller::MPPIController"
       time_steps: 56
-      model_dt: 0.05
-      batch_size: 2000
+      model_dt: 0.1
+      batch_size: 500
       ax_max: 4.0
       ax_min: -4.0
       ay_max: 3.0
@@ -144,31 +145,31 @@ controller_server:
       GoalCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 5.0
+        cost_weight: 6.0
         threshold_to_consider: 1.4
       GoalAngleCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 3.0
+        cost_weight: 3.5
         threshold_to_consider: 0.5
       PreferForwardCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 5.0
+        cost_weight: 6.0
         threshold_to_consider: 0.5
       CostCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 3.81
-        critical_cost: 300.0
+        cost_weight: 15.0
+        critical_cost: 400.0
         consider_footprint: true
-        collision_cost: 1000000.0
+        collision_cost: 1e9
         near_goal_distance: 1.0
         trajectory_point_step: 2
       PathAlignCritic:
         enabled: true
         cost_power: 1
-        cost_weight: 14.0
+        cost_weight: 16.0
         max_path_occupancy_ratio: 0.05
         trajectory_point_step: 4
         threshold_to_consider: 0.5
@@ -188,6 +189,11 @@ controller_server:
         threshold_to_consider: 0.5
         max_angle_to_furthest: 1.0
         mode: 0
+      ObstacleCritic:
+        enabled: true
+        forward_cost_weight: 50.0   # This is very high — good
+        scale: 15.0                 # Increase this to boost avoidance tendency
+        repulsion_weight: 5.0       # Optional: helps with side avoidance
       # TwirlingCritic:
       #   enabled: true
       #   twirling_cost_power: 1
@@ -204,16 +210,13 @@ local_costmap:
       width: 3
       height: 3
       resolution: 0.05
-      robot_radius: 0.22
+      robot_radius: 0.4
       plugins: ["voxel_layer", "inflation_layer"]
-      inflation_layer:
-        plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 3.0
-        inflation_radius: 0.70
+      
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
-        enabled: True
-        publish_voxel_map: True
+        enabled: true
+        publish_voxel_map: false
         origin_z: 0.0
         z_resolution: 0.05
         z_voxels: 16
@@ -221,25 +224,22 @@ local_costmap:
         mark_threshold: 0
         observation_sources: scan
         scan:
-          # A relative topic will be appended to the parent of the local_costmap namespace.
-          # For example:
-          #   * User chosen namespace is `tb4`.
-          #   * User chosen topic is `scan`.
-          #   * Topic will be remapped to `/tb4/scan` without `local_costmap`.
-          #   * Use global topic `/scan` if you do not wish the node namespace to apply
-          topic: scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
+          topic: /scan
           data_type: "LaserScan"
+          marking: true
+          clearing: true
+          max_obstacle_height: 2.0
           raytrace_max_range: 3.0
           raytrace_min_range: 0.0
           obstacle_max_range: 2.5
           obstacle_min_range: 0.0
-      static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
-        map_subscribe_transient_local: True
-      always_send_full_costmap: True
+
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 2.0 #modified
+        inflation_radius: 0.4 #modified
+
+      always_send_full_costmap: true
 
 global_costmap:
   global_costmap:
@@ -248,45 +248,42 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
-      robot_radius: 0.22
+      robot_radius: 0.4
       resolution: 0.05
       track_unknown_space: true
-      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
-      obstacle_layer:
-        plugin: "nav2_costmap_2d::ObstacleLayer"
-        enabled: True
+      plugins: ["static_layer", "voxel_layer", "inflation_layer"]
+
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: true
+
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: true
+        publish_voxel_map: true
+        origin_z: 0.0
+        z_resolution: 0.05
+        z_voxels: 16
+        max_obstacle_height: 2.0
+        mark_threshold: 0
         observation_sources: scan
         scan:
-          # A relative topic will be appended to the parent of the global_costmap namespace.
-          # For example:
-          #   * User chosen namespace is `tb4`.
-          #   * User chosen topic is `scan`.
-          #   * Topic will be remapped to `/tb4/scan` without `global_costmap`.
-          #   * Use global topic `/scan` if you do not wish the node namespace to apply
           topic: scan
-          max_obstacle_height: 2.0
-          clearing: True
-          marking: True
           data_type: "LaserScan"
+          marking: true
+          clearing: true
+          max_obstacle_height: 2.0
           raytrace_max_range: 3.0
           raytrace_min_range: 0.0
           obstacle_max_range: 2.5
           obstacle_min_range: 0.0
-      static_layer:
-        plugin: "nav2_costmap_2d::StaticLayer"
-        map_subscribe_transient_local: True
+
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
-        cost_scaling_factor: 3.0
-        inflation_radius: 0.7
-      always_send_full_costmap: True
+        cost_scaling_factor: 2.0 #modified
+        inflation_radius: 0.4  #modified
 
-# The yaml_filename does not need to be specified since it going to be set by defaults in launch.
-# If you'd rather set it in the yaml, remove the default "map" value in the tb3_simulation_launch.py
-# file & provide full path to map below. If CLI map configuration or launch default is provided, that will be used.
-# map_server:
-#   ros__parameters:
-#     yaml_filename: ""
+      always_send_full_costmap: true
 
 map_saver:
   ros__parameters:
@@ -327,14 +324,14 @@ behavior_server:
       plugin: "nav2_behaviors::Spin"
     backup:
       plugin: "nav2_behaviors::BackUp"
-      acceleration_limit: 2.5
-      deceleration_limit: -2.5
+      acceleration_limit: 3.0
+      deceleration_limit: -3.0
       minimum_speed: 0.10
     drive_on_heading:
       plugin: "nav2_behaviors::DriveOnHeading"
-      acceleration_limit: 2.5
-      deceleration_limit: -2.5
-      minimum_speed: 0.10
+      acceleration_limit: 3.0
+      deceleration_limit: -3.0
+      minimum_speed: 0.50
     wait:
       plugin: "nav2_behaviors::Wait"
     assisted_teleop:
@@ -391,10 +388,10 @@ collision_monitor:
       type: "polygon"
       action_type: "approach"
       footprint_topic: "local_costmap/published_footprint"
-      time_before_collision: 1.2
+      time_before_collision: 1.0
       simulation_time_step: 0.1
       min_points: 6
-      visualize: False
+      visualize: True
       enabled: True
     observation_sources: ["scan"]
     scan:

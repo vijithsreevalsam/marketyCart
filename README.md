@@ -36,31 +36,22 @@ ros2 launch hardware_navigation cart.launch.py
 
 #Running Additional Features
 
-    Follow Me Node
+#Follow Me Node
 
-    cd src/marketcart/cart_navigation/src/cart_navigation
+cd src/marketcart/cart_navigation/src/cart_navigation
+python3 follow_me_node.py
 
-    python3 follow_me_node.py
+#Object Detection (YOLOv8)
 
-    Object Detection (YOLOv8)
+cd src/marketcart/cart_navigation/detection
+python3 detect.py
 
-    cd src/marketcart/cart_navigation/detection
+#Launch the GUI
 
-    python3 detect.py
-
-    Launch the GUI
-
-    cd src/marketcart/cart_navigation/src/cart_navigation
-
-    python3 gui.py
-
-
-
-
-
+cd src/marketcart/cart_navigation/src/cart_navigation
+python3 gui.py
 
 #Required Dependencies
-
 Before running the project, install the following dependencies:
 
 #Initialize rosdep 

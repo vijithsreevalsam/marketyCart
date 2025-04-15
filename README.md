@@ -22,23 +22,7 @@ Only spawn the robot in Gazebo:
 
 ros2 launch cart_navigation cart.launch.py
 
-🤖 Hardware Launch Commands
-
-These are to be used when testing on the real robot with hardware integration.
-
-Navigation with hardware:
-
-ros2 launch hardware_navigation navigation.launch.py
-
-SLAM using real sensors:
-
-ros2 launch hardware_navigation mapping.launch.py
-
-Spawn robot model only:
-
-ros2 launch hardware_navigation cart.launch.py
-
-⚙️ Running Additional Features
+Running Additional Features
 
 Follow Me Node:
 
@@ -55,7 +39,7 @@ Launch the GUI:
 cd src/marketcart/cart_navigation/src/cart_navigation
 python3 gui.py
 
-🧩 Required Dependencies
+Required Dependencies
 Initialize rosdep:
 
 sudo rosdep init
@@ -88,9 +72,9 @@ sudo apt install ros-${ROS_DISTRO}-navigation2
 sudo apt install ros-${ROS_DISTRO}-nav2-bringup
 sudo apt install ros-${ROS_DISTRO}-nav2-map-server
 
-    ⚠️ Replace ${ROS_DISTRO} with your installed ROS 2 version (e.g., jazzy)
+Replace ${ROS_DISTRO} with your installed ROS 2 version (e.g., jazzy)
 
-📝 Notes
+Notes
 
     All simulation work (SLAM, AMCL, Follow Me, and GUI) has been tested with ROS 2 Jazzy and Gazebo.
 
@@ -98,7 +82,7 @@ sudo apt install ros-${ROS_DISTRO}-nav2-map-server
 
     Contribution credits and presentation responsibilities are handled separately as part of the final submission.
 
-👤 Author
+Author
 
 Name: Amen Ahmed
 Email: AA5508@lice.mdx.ac.uk

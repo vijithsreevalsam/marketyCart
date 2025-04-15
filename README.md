@@ -27,27 +27,6 @@ ros2 launch cart_navigation cart.launch.py
 
 ---
 
-## Hardware Launch Commands
-
-These are to be used when testing on the real robot with hardware integration.
-
-**Navigation with hardware:**
-```bash
-ros2 launch hardware_navigation navigation.launch.py
-```
-
-**SLAM using real sensors:**
-```bash
-ros2 launch hardware_navigation mapping.launch.py
-```
-
-**Spawn robot model only:**
-```bash
-ros2 launch hardware_navigation cart.launch.py
-```
-
----
-
 ## Running Additional Features
 
 **Follow Me Node:**

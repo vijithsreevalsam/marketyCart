@@ -102,7 +102,7 @@ class ROS2Thread(QThread):
 class WaypointNavigator(QWidget):
     def __init__(self, waypoint_file, map_origin):
         super().__init__()
-        self.setWindowTitle("Waypoint Navigator")
+        self.setWindowTitle("Smart Screen")
         self.multi_section_mode = False
         self.selected_sections = []
 

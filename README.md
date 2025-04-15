@@ -1,4 +1,4 @@
-# Smart Supermarket Cart – Simulation & Hardware Integration
+# Smart Supermarket Cart – Simulation Package
 
 This repository contains the complete ROS 2 implementation of the Smart Cart project, featuring autonomous navigation, Follow Me mode, object detection via YOLO, and a custom PyQt5 GUI for user control.
 
@@ -20,7 +20,7 @@ ros2 launch cart_navigation navigation.launch.py
 ros2 launch cart_navigation mapping.launch.py
 ```
 
-**Only spawn the robot in Gazebo:**
+**Spawn the robot in Gazebo:**
 ```bash
 ros2 launch cart_navigation cart.launch.py
 ```

@@ -1,58 +1,123 @@
-before starting rename the cloned package to "marketcart" to make the commands below work
+Smart Supermarket Cart – Simulation & Hardware Integration
 
-#simulation package launch 
+This repository contains the complete ROS 2 implementation of the Smart Cart project, featuring autonomous navigation, Follow Me mode, object detection via YOLO, and a custom PyQt5 GUI for user control.
 
-ros2 launch cart_navigation navigation.launch.py #navigation with robot spawned
-ros2 launch cart_navigation mapping.launch.py #does the slam
-ros2 launch cart_navigation cart.launch.py #spawn the robot
+Note: After cloning the repository, please rename the folder to marketcart to ensure the launch commands below work as expected.
 
-#hardware package launch 
+#Simulation Launch Commands
+These commands are for testing the robot in Gazebo with the full navigation stack.
 
-ros2 launch hardware_navigation navigation.launch.py #navigation with robot spawned
-ros2 launch hardware_navigation mapping.launch.py #does the slam
-ros2 launch hardware_navigation cart.launch.py #spawn the robot
+#Launch full navigation stack with robot spawned
 
-#launching follow me node
-cd Worspace path/src/marketmart/cart_navigation/detection
-detect.py
+ros2 launch cart_navigation navigation.launch.py
 
-#launching follow me node
-cd Worspace path/src/marketmart/cart_navigation/src/cart_navigation
-python3 follow_me_node.py
+#Launch SLAM (for map creation)
 
-#launching the gui
-cd Worspace path/src/marketmart/cart_navigation/src/cart_navigation
-python3 gui.py
+ros2 launch cart_navigation mapping.launch.py
+
+#Only spawn the robot in Gazebo
+
+ros2 launch cart_navigation cart.launch.py
+
+#Hardware Launch Commands
+These are to be used when testing on the real robot with hardware integration.
+
+#Launch navigation with robot and hardware nodes
+
+ros2 launch hardware_navigation navigation.launch.py
+
+#Launch SLAM using real sensors
+
+ros2 launch hardware_navigation mapping.launch.py
+
+#Spawn robot model without SLAM
+
+ros2 launch hardware_navigation cart.launch.py
+
+#Running Additional Features
+
+    Follow Me Node
+
+    cd src/marketcart/cart_navigation/src/cart_navigation
+
+    python3 follow_me_node.py
+
+    Object Detection (YOLOv8)
+
+    cd src/marketcart/cart_navigation/detection
+
+    python3 detect.py
+
+    Launch the GUI
+
+    cd src/marketcart/cart_navigation/src/cart_navigation
+
+    python3 gui.py
 
 
-#all required dependancies for running the packages
+
+
+
+
+#Required Dependencies
+
+Before running the project, install the following dependencies:
+
+#Initialize rosdep 
+
 sudo rosdep init
+
 rosdep update
 
+#General dependencies
+
 sudo apt update
-sudo apt install '~nros-<distro>-rqt*'
-rqt
 
-#gazebo install
-sudo apt-get install ros-${ROS_DISTRO}-ros-gz -y  
+sudo apt install ‘~nros–rqt*’ rqt
 
-#Install useful tools
-sudo apt-get install python3-vcstool
-sudo apt-get install python3 python3-pip -y
-sudo apt-get install python3-numpy
+sudo apt install python3 python3-pip python3-numpy
 
-sudo apt-get install ros-${ROS_DISTRO}-urdf-tutorial
+sudo apt install python3-vcstool
 
-#IMU
-sudo apt install ros-jazzy-rviz-imu-plugin  #replace jazzy with the required distro
+sudo apt install ros-${ROS_DISTRO}-urdf-tutorial
+
+#Gazebo integration
+
+sudo apt install ros-${ROS_DISTRO}-ros-gz -y
+
+#IMU visualization
+
+sudo apt install ros-${ROS_DISTRO}-rviz-imu-plugin
 
 #Localization
-sudo apt install ros-jazzy-robot-localization  #replace jazzy with the required distro
-#Slam & Navigation
-sudo apt install ros-jazzy-slam-toolbox  #replace jazzy with the required distro
-# following are optional
-sudo apt install ros-jazzy-navigation2  #replace jazzy with the required distro
-sudo apt install ros-jazzy-nav2-bringup #replace jazzy with the required distro
 
-#server connection
-sudo apt install ros-jazzy-nav2-map-server #replace jazzy with the required distro
+sudo apt install ros-${ROS_DISTRO}-robot-localization
+
+#SLAM & Navigation
+
+sudo apt install ros-${ROS_DISTRO}-slam-toolbox
+
+sudo apt install ros-${ROS_DISTRO}-navigation2
+
+sudo apt install ros-${ROS_DISTRO}-nav2-bringup
+
+sudo apt install ros-${ROS_DISTRO}-nav2-map-server
+
+Note: Replace ${ROS_DISTRO} with your current ROS 2 distribution (e.g., jazzy)
+
+Notes
+
+    All simulation work (SLAM, AMCL, Follow Me, and GUI) has been tested with ROS 2 Jazzy and Gazebo.
+
+    This project includes both simulation and hardware support, but simulation features are fully functional for demonstration purposes.
+
+    Contribution credits and presentation responsibilities are handled separately as part of the final submission.
+
+Author
+
+
+Name: Amen Ahmed
+
+Email: AA5508@lice.mdx.ac.uk
+
+Submission: Final Submission 2 – Simulation & GUI Lead

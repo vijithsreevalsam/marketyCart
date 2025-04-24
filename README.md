@@ -24,6 +24,9 @@ ros2 launch cart_navigation mapping.launch.py
 ```bash
 ros2 launch cart_navigation cart.launch.py
 ```
+**Launch the real robot hardware :**
+
+ros2 launch cart_bot launch_robot.launch.py
 
 ---
 
@@ -103,6 +106,6 @@ sudo apt install ros-${ROS_DISTRO}-nav2-map-server
 
 ## Author
 
-**Name**: Amen Ahmed  
-**Email**: AA5508@lice.mdx.ac.uk  
-**Submission**: Final Submission 2 – Simulation & GUI Lead
+**Name**: Amen Ahmed ,Vijith viswan,Mahim Trivedi, Michel Bedaba  
+**Email**: AA5508@lice.mdx.ac.uk  , VV254@live.mdx.ac.uk,MT1233@live.mdx.ac.uk,MB2537@live.mdx.ac.uk
+**Submission**: Final Submission 2 – Simulation & GUI Lead &  Partial hardware operation - SLAM only 

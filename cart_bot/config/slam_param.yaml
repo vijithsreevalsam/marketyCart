@@ -1,0 +1,27 @@
+slam_toolbox:
+  ros__parameters:
+    use_sim_time: false
+
+    # Frames
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_link
+
+    scan_topic: /scan
+    odom_topic: /odometry/filtered
+
+    resolution: 0.05  # Grid cell size in meters
+    max_laser_range: 12.0  # RPLIDAR C1 max range ~8m
+    minimum_time_interval: 0.5
+
+    map_update_interval: 2.0
+
+    transform_timeout: 0.2
+    tf_buffer_duration: 30.0
+
+    mode: mapping
+
+    publish_tf_map: true
+    use_scan_matching: true
+    use_scan_barycenter: false
+    scan_match_strategy: 1  # 1=ceres

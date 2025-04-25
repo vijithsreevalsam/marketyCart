@@ -11,7 +11,7 @@ Real-time fruit and vegetable detection with price calculation using YOLOv8.
 - Custom training with Roboflow datasets
 
 ## Dataset
-
+(https://www.kaggle.com/datasets/kvnpatel/fruits-vegetable-detection-for-yolov4)
 Location: `C:\Yolo\dataset fruits and vegetables`
 
 Format: YOLOv8 (train/valid folders with images and labels)
